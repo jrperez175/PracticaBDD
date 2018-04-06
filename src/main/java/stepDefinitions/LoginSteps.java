@@ -163,7 +163,7 @@ public class LoginSteps {
 	    	driver.findElement(By.id("MainContent_txtFirstName")).sendKeys("Jhon R Perez");
 	    }
 	    
-	    @And ("y su (.*)")
+	    @And ("correo (.*)")
 	    public void usuarioIngresaEmail(String email) throws InterruptedException {
 	    	driver.findElement(By.id("MainContent_txtEmail")).sendKeys(email);
 	    	Thread.sleep(3000);
@@ -176,18 +176,18 @@ public class LoginSteps {
 	    public void usuarioSeleccionaGenero() {
 	    	driver.findElement(By.id("MainContent_Female")).click();
 	    }
-	    @And ("el usuario ingresa el password")
-	    public void usuarioIngresaPassword() {
-	    	driver.findElement(By.id("MainContent_txtPassword")).sendKeys("hola2018");
+	    @And ("password (.*)")
+	    public void usuarioIngresaPassword(String password ) {
+	    	driver.findElement(By.id("MainContent_txtPassword")).sendKeys(password);
 	    }
-	    @And ("el usuario ingresa la verificacion del password")
-	    public void usuarioIngresaVerificacionPassword() {
-	    	driver.findElement(By.id("MainContent_txtVerifyPassword")).sendKeys("hola2018");
+	    @And ("verifica su password (.*)")
+	    public void usuarioIngresaVerificacionPassword(String repassword) {
+	    	driver.findElement(By.id("MainContent_txtVerifyPassword")).sendKeys(repassword);
 	    }
-	    @And ("el usuario selecciona el pais")
-	    public void usuarioSeleccionaPais() {
+	    @And ("pais (.*)")
+	    public void usuarioSeleccionaPais(String pais) {
 	    	Select comboPais = new Select(driver.findElement(By.id("MainContent_menuCountry")));
-	    	comboPais.selectByValue("Ecuador");
+	    	comboPais.selectByValue(pais);
 	    	
 	    }
 	    @And ("el usuario selecciona la suscripcion")
@@ -201,10 +201,28 @@ public class LoginSteps {
 	    }
 	    
 	    @Then ("la cuenta fue creada con exito")
-	    public void usuarioCreaCuentaExitosa() {
+	    public void usuarioCreaCuentaExitosa() throws InterruptedException {
+	    	Thread.sleep(3000);
 	    	String resultado = driver.findElement(By.id("MainContent_lblTransactionResult")).getText();
-			assertEquals("Customer information added successfully", resultado);
+	    	assertEquals("Customer information added successfully", resultado);
 	    }
-	
+	    
+	    @When ("el usuario ingrese un (.*)")
+	    public void usuarioIngresaCorreoParamterizado(String correo) {
+	    	
+	    	// Caja de Texto Usuari0
+	    	driver.findElement(By.id("MainContent_txtUserName")).clear();
+			driver.findElement(By.id("MainContent_txtUserName")).sendKeys(correo);
+						
+			driver.findElement(By.id("MainContent_btnLogin")).click();
+			
+	    }
+	    @And ("y un (.*)")
+	    public void usuarioIngresaPasswordParamterizado(String password) {
+	    	// Caja de Texto Password
+			driver.findElement(By.name("ctl00$MainContent$txtPassword")).clear();
+			driver.findElement(By.name("ctl00$MainContent$txtPassword")).sendKeys(password);
+			driver.findElement(By.id("MainContent_btnLogin")).click();
+	    }
 
 }
