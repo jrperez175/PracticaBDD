@@ -7,6 +7,6 @@ import cucumber.api.junit.Cucumber;
 
 @RunWith(Cucumber.class)
 @CucumberOptions(features="projectFeatures", glue="stepDefinitions") //definimos donde esta el lenguaje gherkin y el codigo pegado
-public class loginRunner {
+public class TestRunner {
 	
 }

@@ -15,11 +15,15 @@ import cucumber.api.java.Before;
 import cucumber.api.java.en.Given;
 import cucumber.api.java.en.Then;
 import cucumber.api.java.en.When;
+import pages.DashBoardPage;
+import pages.LoginPage;
 import cucumber.api.java.en.And;
 
 public class LoginSteps {
 
 	public WebDriver driver;
+	LoginPage loginpage;
+	DashBoardPage dashboardpage;
 
 	@Before
 	public void setup() {
@@ -28,6 +32,8 @@ public class LoginSteps {
 
 		// definir una instancia objeto
 		driver = new ChromeDriver();
+		loginpage = new LoginPage(driver);
+		dashboardpage = new DashBoardPage(driver);
 	}
 	
 	@After
@@ -50,82 +56,77 @@ public class LoginSteps {
 		// System.out.println("Usuario esta en la pagina de login");
 	}
 
-	@When("el usuario ingrese una credencial valida")
-	public void usuarioIngresaCredencialesValidas() {
-		// Limipiar datos
-		driver.findElement(By.id("MainContent_txtUserName")).clear();
-		driver.findElement(By.name("ctl00$MainContent$txtPassword")).clear();
-
-		// Caja de Texto Usuari0
-		driver.findElement(By.id("MainContent_txtUserName")).sendKeys("jhonperez@gmail.com");
-		// Caja de texto Password
-		driver.findElement(By.name("ctl00$MainContent$txtPassword")).sendKeys("nicolas2005");
-
-		/*
-		 * WebElement usuario = driver.findElement(By.id("MainContent_txtUserName"));
-		 * WebElement password = driver.findElement(By.id("MainContent_txtPassword"));
-		 * 
-		 * usuario.sendKeys("jhonperez@gmail.com"); password.sendKeys("nicolas2005");
-		 */
-
-		driver.findElement(By.id("MainContent_btnLogin")).click();
-
-		// System.out.println("Usuario ingreso credenciales en la pagina login");
-	}
+//	@When("el usuario ingrese una credencial valida")
+//	public void usuarioIngresaCredencialesValidas() {
+//		// Limipiar datos
+//		driver.findElement(By.id("MainContent_txtUserName")).clear();
+//		driver.findElement(By.name("ctl00$MainContent$txtPassword")).clear();
+//
+//		// Caja de Texto Usuari0
+//		driver.findElement(By.id("MainContent_txtUserName")).sendKeys("jhonperez@gmail.com");
+//		// Caja de texto Password
+//		driver.findElement(By.name("ctl00$MainContent$txtPassword")).sendKeys("nicolas2005");
+//
+//		/*
+//		 * WebElement usuario = driver.findElement(By.id("MainContent_txtUserName"));
+//		 * WebElement password = driver.findElement(By.id("MainContent_txtPassword"));
+//		 * 
+//		 * usuario.sendKeys("jhonperez@gmail.com"); password.sendKeys("nicolas2005");
+//		 */
+//
+//		driver.findElement(By.id("MainContent_btnLogin")).click();
+//
+//		// System.out.println("Usuario ingreso credenciales en la pagina login");
+//	}
 
 	@Then("el usuario puede ver su perfil")
 	public void usuarioVeSuPanel() {
 		// System.out.println("Usuario accede con exito");
-		// String resultado = driver.findElement(By.id("conf_message")).getText();
-		// assertEquals("Logged in successfully", resultado);
+		 String resultado = dashboardpage.checkLogin();
+		 assertEquals("Logged in successfully", resultado);
 
 		// cuando no se tiene identificador se utiliza xpath
 
-		String resultado = driver.findElement(By.xpath("//*[@id=\"ctl01\"]/div[3]/div[2]/div/div[1]/h1")).getText();
-		assertEquals("Welcome back!", resultado);
+		//String resultado = driver.findElement(By.xpath("//*[@id=\"ctl01\"]/div[3]/div[2]/div/div[1]/h1")).getText();
+		//assertEquals("Welcome back!", resultado);
 		// driver.close();
 	}
 
-	@When("el usuario ingrese un usuario erroneo")
-	public void usuarioIngresaUsuarioErroneo() {
-		// Limipiar datos
-		driver.findElement(By.id("MainContent_txtUserName")).clear();
-		driver.findElement(By.name("ctl00$MainContent$txtPassword")).clear();
-
-		// Caja de Texto Usuari0
-		driver.findElement(By.id("MainContent_txtUserName")).sendKeys("jhonperez1@gmail.com");
-		// Caja de texto Password
-		driver.findElement(By.name("ctl00$MainContent$txtPassword")).sendKeys("nicolas2005");
-		driver.findElement(By.id("MainContent_btnLogin")).click();
-	}
+//	@When("el usuario ingrese un usuario erroneo")
+//	public void usuarioIngresaUsuarioErroneo() {
+//		
+//		// Caja de Texto Usuario
+//		loginpage.ingresarCorreo("jhonperez1@gmail.com");
+//		// Caja de texto Password
+//		loginpage.ingresarPassword("nicolas2005");
+//		
+//	}
 
 	@Then("Invalid User Name")
-	public void usuarioNoVeSuPanelUsuarioErroneo() {
-
-		String resultado = driver.findElement(By.id("MainContent_lblTransactionResult")).getText();
+	public void usuarioNoVeSuPanelUsuarioErroneo() throws InterruptedException {
+		Thread.sleep(3000);
+		String resultado = loginpage.ingresoErroneo();
 		assertEquals("Invalid user name, try again!", resultado);
 
-		// driver.close();
+		
 	}
 
-	@When("el usuario ingrese un password erroneo")
-	public void usuarioIngresaPasswordErroneo() {
-		// Limipiar datos
-		driver.findElement(By.id("MainContent_txtUserName")).clear();
-		driver.findElement(By.name("ctl00$MainContent$txtPassword")).clear();
-
-		// Caja de Texto Usuari0
-		driver.findElement(By.id("MainContent_txtUserName")).sendKeys("jhonperez@gmail.com");
-		// Caja de texto Password
-		driver.findElement(By.name("ctl00$MainContent$txtPassword")).sendKeys("nicolas2008");
-		driver.findElement(By.id("MainContent_btnLogin")).click();
-	}
+//	@When("el usuario ingrese un password erroneo")
+//	public void usuarioIngresaPasswordErroneo() {
+//		
+//
+//		// Caja de Texto Usuario
+//		loginpage.ingresarCorreo("jhonperez@gmail.com");
+//		// Caja de texto Password
+//		loginpage.ingresarPassword("nicolas2008");
+//		
+//	}
 
 	@Then("Invalid Password")
-	public void usuarioNoVeSuPanelPasswordErroneo() {
+	public void usuarioNoVeSuPanelPasswordErroneo() throws InterruptedException {
 
-		
-		String resultado = driver.findElement(By.id("MainContent_lblTransactionResult")).getText();
+		Thread.sleep(3000);
+		String resultado = loginpage.ingresoErroneo();
 		assertEquals("Invalid password, try again!", resultado);
 
 	}
@@ -152,77 +153,49 @@ public class LoginSteps {
 	}
 	*/
 
-	
-	 @When ("el usuario da click en el boton crear cuenta")
-	 public void usuarioDaClickBotonCrearCuenta() {
-		 driver.findElement(By.cssSelector("a.btn.btn-default")).click();
-		 //driver.findElement(By.linkText("CREATE ACCOUNT")).click();
-	 }
-	    @And ("el usuario ingresa su nombre")
-	    public void usuarioIngresaNombre() {
-	    	driver.findElement(By.id("MainContent_txtFirstName")).sendKeys("Jhon R Perez");
-	    }
-	    
-	    @And ("correo (.*)")
-	    public void usuarioIngresaEmail(String email) throws InterruptedException {
-	    	driver.findElement(By.id("MainContent_txtEmail")).sendKeys(email);
-	    	Thread.sleep(3000);
-	    }
-	    @And ("el usuario ingresa telefono")
-	    public void usuarioIngresaTelefono() {
-	    	driver.findElement(By.id("MainContent_txtHomePhone")).sendKeys("231345");
-	    }
-	    @And ("el usuario selecciona el genero")
-	    public void usuarioSeleccionaGenero() {
-	    	driver.findElement(By.id("MainContent_Female")).click();
-	    }
-	    @And ("password (.*)")
-	    public void usuarioIngresaPassword(String password ) {
-	    	driver.findElement(By.id("MainContent_txtPassword")).sendKeys(password);
-	    }
-	    @And ("verifica su password (.*)")
-	    public void usuarioIngresaVerificacionPassword(String repassword) {
-	    	driver.findElement(By.id("MainContent_txtVerifyPassword")).sendKeys(repassword);
-	    }
-	    @And ("pais (.*)")
-	    public void usuarioSeleccionaPais(String pais) {
-	    	Select comboPais = new Select(driver.findElement(By.id("MainContent_menuCountry")));
-	    	comboPais.selectByValue(pais);
-	    	
-	    }
-	    @And ("el usuario selecciona la suscripcion")
-	    public void usuarioSeleccionaSuscripcion() {
-	    	driver.findElement(By.id("MainContent_checkWeeklyEmail")).click();
-	    }
-	    @And ("el usuario da click en el boton submitir")
-	    public void usuarioClickBotonSubmitir() {
-	    	driver.findElement(By.id("MainContent_btnSubmit")).click();
-	    	
-	    }
-	    
-	    @Then ("la cuenta fue creada con exito")
-	    public void usuarioCreaCuentaExitosa() throws InterruptedException {
-	    	Thread.sleep(3000);
-	    	String resultado = driver.findElement(By.id("MainContent_lblTransactionResult")).getText();
-	    	assertEquals("Customer information added successfully", resultado);
-	    }
-	    
-	    @When ("el usuario ingrese un (.*)")
+	   @When ("el usuario ingrese un (.*)")
 	    public void usuarioIngresaCorreoParamterizado(String correo) {
 	    	
 	    	// Caja de Texto Usuari0
-	    	driver.findElement(By.id("MainContent_txtUserName")).clear();
-			driver.findElement(By.id("MainContent_txtUserName")).sendKeys(correo);
-						
-			driver.findElement(By.id("MainContent_btnLogin")).click();
-			
+	    	loginpage.ingresarCorreo(correo);
+		   	//driver.findElement(By.id("MainContent_txtUserName")).clear();
+			//driver.findElement(By.id("MainContent_txtUserName")).sendKeys(correo);
+							
 	    }
 	    @And ("y un (.*)")
 	    public void usuarioIngresaPasswordParamterizado(String password) {
 	    	// Caja de Texto Password
-			driver.findElement(By.name("ctl00$MainContent$txtPassword")).clear();
-			driver.findElement(By.name("ctl00$MainContent$txtPassword")).sendKeys(password);
-			driver.findElement(By.id("MainContent_btnLogin")).click();
+			loginpage.ingresarPassword(password);
+	    	//driver.findElement(By.name("ctl00$MainContent$txtPassword")).clear();
+			//driver.findElement(By.name("ctl00$MainContent$txtPassword")).sendKeys(password);
+			
 	    }
+	    
+	    @And ("y hace clik en el boton Login")
+	    public void usuarioClicBotonLogin() {
+	    	loginpage.clickBotonLogin();
+	    	
+	    	//driver.findElement(By.id("MainContent_btnLogin")).click();
+	    }
+	    
+	    @When ("ingrese un correo erroneo (.*)")
+	    public void usuarioIngresaCorreoErroneo(String correo) {
+	    	
+	    	// Caja de Texto Usuari0
+	    	loginpage.ingresarCorreo(correo);
+		   	//driver.findElement(By.id("MainContent_txtUserName")).clear();
+			//driver.findElement(By.id("MainContent_txtUserName")).sendKeys(correo);
+							
+	    }
+	    
+	    @And ("password erroneo (.*)")
+	    public void usuarioIngresaPasswordErroneo(String password) {
+	    	// Caja de Texto Password
+			loginpage.ingresarPassword(password);
+	    	//driver.findElement(By.name("ctl00$MainContent$txtPassword")).clear();
+			//driver.findElement(By.name("ctl00$MainContent$txtPassword")).sendKeys(password);
+			
+	    }
+	    
 
 }
