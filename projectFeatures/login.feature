@@ -17,7 +17,7 @@ Feature: Login en la pagina STD
   #Scenario: Login Exitoso
   #Given Dado que el usuario esta en la pagina de Login
   #When el usuario ingrese una credencial valida
-  #Then el usuario puede ver su perfil
+  #Then el usuario puede ver su perfil.
   
   Scenario Outline: Login Usuario Fallido
     Given Dado que el usuario esta en la pagina de Login
